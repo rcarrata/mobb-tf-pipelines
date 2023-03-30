@@ -1,26 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  creationTimestamp: "2023-03-23T15:02:23Z"
-  generation: 1
-  managedFields:
-    - apiVersion: tekton.dev/v1beta1
-      fieldsType: FieldsV1
-      fieldsV1:
-        "f:spec":
-          .: {}
-          "f:finally": {}
-          "f:params": {}
-          "f:resources": {}
-          "f:tasks": {}
-          "f:workspaces": {}
-      manager: Mozilla
-      operation: Update
-      time: "2023-03-23T15:02:23Z"
   name: mobb-aro-tf
-  namespace: openshift-operators
-  resourceVersion: "60723321"
-  uid: 8e113b7b-d5c5-4327-9366-7c17208b99fb
 spec:
   tasks:
     - name: git-clone
@@ -51,14 +32,10 @@ spec:
         name: git-clone
       workspaces:
         - name: output
-          workspace: mobb-tf
-        - name: ssh-directory
-          workspace: mobb-tf
-        - name: basic-auth
-          workspace: mobb-tf
-        - name: ssl-ca-directory
-          workspace: mobb-tf
+          workspace: source
     - name: terraform
+      runAfter:
+        - git-clone
       taskRef:
         name: terraform-cli
       workspaces:
@@ -72,4 +49,4 @@ spec:
             - apply
             - "-auto-approve"
   workspaces:
-    - name: mobb-tf
+    - name: source
