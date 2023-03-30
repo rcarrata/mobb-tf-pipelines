@@ -61,16 +61,6 @@ spec:
           value: $(params.httpProxy)
       args:
         - "init"
-    - name: fake-ssh-keys
-      image: $(params.image)
-      workingDir: $(workspaces.source.path)
-      script: |
-        mkdir ~/.ssh
-        echo "xxxx" > ~/.ssh/id_rsa.pub
-        echo "yyyy" > ~/.ssh/id_rsa
-        cat ~/.ssh/id_rsa
-        ls -lhrt ~/.ssh/id_rsa
-        rm -rf jumphost.tf
 
     - name: terraform-cli
       image: $(params.image)
